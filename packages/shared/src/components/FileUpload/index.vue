@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { propTypes } from "../../utils/propTypes";
-import { delOss, listByIds } from "@/api/system/oss";
+import { delOss, listByIds } from "../../api/system/oss";
 // import { globalHeaders } from '@/utils/request';
 
 const msgBus = (window as any).__QIANKUN_MSG_BUS__ as IMessageBus;
