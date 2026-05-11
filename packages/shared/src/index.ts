@@ -7,6 +7,7 @@ export { default as svgicon } from "./plugins/svgicon";
 // Short aliases for submodule main.ts imports
 export { default as plugins } from "./plugins";
 export { default as ElementIcons } from "./plugins/svgicon";
+export { default as modal } from "./plugins/modal";
 
 // Store
 export { default as createSharedStore } from "./store";
