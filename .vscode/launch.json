@@ -6,10 +6,12 @@
       "request": "launch",
       "name": "LIS (via shell 8106)",
       "url": "http://192.168.168.128:8106/lis",
-      "webRoot": "${workspaceFolder}/packages/lis",
+      "webRoot": "${workspaceFolder}",
       "sourceMapPathOverrides": {
         "/@fs/*": "${workspaceFolder}/*",
-        "webpack:///./src/*": "${webRoot}/src/*"
+        "webpack:///./src/*": "${workspaceFolder}/packages/lis/src/*",
+        "webpack:///src/*": "${workspaceFolder}/packages/lis/src/*",
+        "/lis/*": "${workspaceFolder}/packages/lis/*"
       }
     },
     {
@@ -17,10 +19,12 @@
       "request": "launch",
       "name": "QC (via shell 8106)",
       "url": "http://192.168.168.128:8106/qc",
-      "webRoot": "${workspaceFolder}/packages/qc",
+      "webRoot": "${workspaceFolder}",
       "sourceMapPathOverrides": {
         "/@fs/*": "${workspaceFolder}/*",
-        "webpack:///./src/*": "${webRoot}/src/*"
+        "webpack:///./src/*": "${workspaceFolder}/packages/qc/src/*",
+        "webpack:///src/*": "${workspaceFolder}/packages/qc/src/*",
+        "/qc/*": "${workspaceFolder}/packages/qc/*"
       }
     },
     {
@@ -28,11 +32,13 @@
       "request": "launch",
       "name": "Person (via shell 8106)",
       "url": "http://192.168.168.128:8106/person",
-      "webRoot": "${workspaceFolder}/packages/person",
+      "webRoot": "${workspaceFolder}",
       "sourceMapPathOverrides": {
         "/@fs/*": "${workspaceFolder}/*",
-        "webpack:///./src/*": "${webRoot}/src/*"
+        "webpack:///./src/*": "${workspaceFolder}/packages/person/src/*",
+        "webpack:///src/*": "${workspaceFolder}/packages/person/src/*",
+        "/person/*": "${workspaceFolder}/packages/person/*"
       }
-    }
+    },
   ]
 }
