@@ -1,0 +1,23 @@
+{
+  "name": "@poct/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build"
+  },
+  "peerDependencies": {
+    "element-plus": "^2.11.0",
+    "pinia": "^3.0.0",
+    "vue": "^3.5.0",
+    "vue-router": "^4.6.0",
+    "vue-i18n": "^11.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.4",
+    "typescript": "~5.9.3",
+    "vite": "^6.4.1",
+    "vite-plugin-dts": "^4.0.0"
+  }
+}

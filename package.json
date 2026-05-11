@@ -1,0 +1,16 @@
+{
+  "name": "poct-frontend",
+  "private": true,
+  "scripts": {
+    "dev:lis": "pnpm --filter poct-ui-lis dev",
+    "dev:person": "pnpm --filter poct-ui-person dev",
+    "dev:qc": "pnpm --filter poct-ui-qc dev",
+    "build:lis": "pnpm --filter poct-ui-lis build",
+    "build:person": "pnpm --filter poct-ui-person build",
+    "build:qc": "pnpm --filter poct-ui-qc build"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=9"
+  }
+}
