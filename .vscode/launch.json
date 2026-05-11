@@ -1,48 +1,24 @@
 {
     "version": "0.2.0",
     "configurations": [
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "LIS (via shell 8106)",
-      "url": "http://192.168.168.128:8106/lis",
-      "webRoot": "${workspaceFolder}/packages/lis",
-      "sourceMapPathOverrides": {
-        "/@fs/*": "${workspaceFolder}/*"
-      }
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "QC (via shell 8106)",
-      "url": "http://192.168.168.128:8106/qc",
-      "webRoot": "${workspaceFolder}/packages/qc",
-      "sourceMapPathOverrides": {
-        "/@fs/*": "${workspaceFolder}/*"
-      }
-    },
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Person (via shell 8106)",
-      "url": "http://192.168.168.128:8106/person",
-      "webRoot": "${workspaceFolder}/packages/person",
-      "sourceMapPathOverrides": {
-        "/@fs/*": "${workspaceFolder}/*"
-      }
-    }
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "LIS (via shell 8106)",
+            "url": "http://192.168.168.128:8106",
+            "webRoot": "${workspaceFolder}/packages/lis",
+            "sourceMapPathOverrides": {
+                "/@fs/*": "${workspaceFolder}/*"
+            }
         },
         {
             "type": "chrome",
             "request": "launch",
             "name": "QC (via shell 8106)",
             "url": "http://192.168.168.128:8106",
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}/packages/qc",
             "sourceMapPathOverrides": {
-                "/@fs/*": "${workspaceFolder}/*",
-                "webpack:///./src/*": "${workspaceFolder}/packages/qc/src/*",
-                "webpack:///src/*": "${workspaceFolder}/packages/qc/src/*",
-                "/qc/*": "${workspaceFolder}/packages/qc/*"
+                "/@fs/*": "${workspaceFolder}/*"
             }
         },
         {
@@ -50,13 +26,10 @@
             "request": "launch",
             "name": "Person (via shell 8106)",
             "url": "http://192.168.168.128:8106",
-            "webRoot": "${workspaceFolder}",
+            "webRoot": "${workspaceFolder}/packages/person",
             "sourceMapPathOverrides": {
-                "/@fs/*": "${workspaceFolder}/*",
-                "webpack:///./src/*": "${workspaceFolder}/packages/person/src/*",
-                "webpack:///src/*": "${workspaceFolder}/packages/person/src/*",
-                "/person/*": "${workspaceFolder}/packages/person/*"
+                "/@fs/*": "${workspaceFolder}/*"
             }
-        },
+        }
     ]
 }
