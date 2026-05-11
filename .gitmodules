@@ -1,0 +1,9 @@
+[submodule "packages/lis"]
+	path = packages/lis
+	url = git@github.com:rolkey/poct-uix-lis.git
+[submodule "packages/person"]
+	path = packages/person
+	url = git@github.com:rolkey/poct-uix-person.git
+[submodule "packages/qc"]
+	path = packages/qc
+	url = git@github.com:rolkey/poct-uix-qc.git
