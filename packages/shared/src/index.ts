@@ -25,7 +25,7 @@ export { default as i18n, getLanguage } from "./lang";
 export { default as directive } from "./directive";
 
 // Components
-export { Pagination, DictTag, FileUpload } from "./components";
+export { Pagination, DictTag, FileUpload, RightToolbar, registerSharedComponents } from "./components";
 
 // Animate
 export { default as animate } from "./animate";
