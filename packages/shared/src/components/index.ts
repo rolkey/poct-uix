@@ -1,7 +1,9 @@
-export { default as Pagination } from "./Pagination.vue";
-export { default as DictTag } from "./DictTag.vue";
-export { default as FileUpload } from "./FileUpload/index.vue";
-export { default as RightToolbar } from "./RightToolbar/index.vue";
+import Pagination from "./Pagination.vue";
+import DictTag from "./DictTag.vue";
+import FileUpload from "./FileUpload/index.vue";
+import RightToolbar from "./RightToolbar/index.vue";
+
+export { Pagination, DictTag, FileUpload, RightToolbar };
 
 /** Globally register all shared components on a Vue app instance */
 export function registerSharedComponents(app: any) {
