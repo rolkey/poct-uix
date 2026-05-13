@@ -4,7 +4,7 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "LIS (via shell 8106)",
+            "name": "LIS",
             "url": "http://192.168.168.128:8106",
             "webRoot": "${workspaceFolder}/packages/lis",
             "sourceMapPathOverrides": {
@@ -14,7 +14,7 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "QC (via shell 8106)",
+            "name": "QC",
             "url": "http://192.168.168.128:8106",
             "webRoot": "${workspaceFolder}/packages/qc",
             "sourceMapPathOverrides": {
@@ -24,7 +24,7 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Person (via shell 8106)",
+            "name": "Person",
             "url": "http://192.168.168.128:8106",
             "webRoot": "${workspaceFolder}/packages/person",
             "sourceMapPathOverrides": {
