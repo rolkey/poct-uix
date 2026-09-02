@@ -7,3 +7,6 @@
 [submodule "packages/qc"]
 	path = packages/qc
 	url = git@github.com:rolkey/poct-uix-qc.git
+[submodule "packages/his"]
+	path = packages/his
+	url = git@github.com:rolkey/RuoYi-Cloud-Plus-2.x-UI-HIS.git
