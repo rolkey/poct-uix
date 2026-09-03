@@ -4,10 +4,10 @@
     filterable
     remote
     ref="selectRef"
-    :placeholder="placeholder"
+    :placeholder="props.placeholder"
     remote-show-suffix
     v-select-all-on-focus
-    :disabled="readonly"
+    :disabled="props.readonly"
     default-first-option
     :clearable="props.clearable"
     :remote-method="remoteMethod"
@@ -123,62 +123,24 @@
   </el-select>
 </template>
 
-<script setup>
-import pagination from "@/components/Pagination/index.vue";
+<script setup lang="ts">
+import { computed, reactive, ref } from "vue";
 import { ElSelect } from "element-plus";
+import pagination from "../Pagination.vue";
+import type { AutoInputProps, AutoInputQueryParams, AutoInputRow } from "./types";
 
-const selectVal = ref("");
-const scrollLeft = ref(0);
-const props = defineProps({
-  selectValue: {
-    type: String,
-    default: () => "",
-  },
-  selectRow: {
-    type: Object,
-    default: () => {},
-  },
-  labelField: {
-    type: String,
-    default: () => "",
-  },
-  extlabelField: {
-    type: String,
-    default: () => "",
-  },
-  extValueField: {
-    type: String,
-    default: () => "",
-  },
-  valueField: {
-    type: String,
-    default: () => "",
-  },
-  placeholder: {
-    type: String,
-    default: "请选择",
-  },
-  // 数据查询接口
-  queryApi: {
-    type: Function,
-    default: () => ({}),
-  },
-  queryFields: {
-    type: Array,
-    default: () => [],
-  },
-  clearable: {
-    type: Boolean,
-    default: () => false,
-  },
-  readonly: {
-    type: Boolean,
-    default: () => false,
-  },
-  tableWidth: {
-    type: Number,
-    default: undefined,
-  },
+const props = withDefaults(defineProps<AutoInputProps>(), {
+  selectValue: "",
+  selectRow: () => ({}),
+  labelField: "",
+  extlabelField: "",
+  extValueField: "",
+  valueField: "",
+  placeholder: "请选择",
+  queryApi: async () => ({ pageData: [], total: 0 }),
+  queryFields: () => [],
+  clearable: false,
+  readonly: false,
 });
 
 // 计算表格容器样式
@@ -197,20 +159,26 @@ const scrollableColumnsStyle = computed(() => {
   };
 });
 
-// 保持其他代码不变
-const emit = defineEmits(["update:selectValue", "update:selectRow", "handleEnter"]);
-const selectRef = ref(null);
-const inputRef = ref(null);
+const emit = defineEmits<{
+  "update:selectValue": [value: string];
+  "update:selectRow": [row?: AutoInputRow];
+  handleEnter: [event: KeyboardEvent];
+}>();
+
+const selectVal = ref("");
+const scrollLeft = ref(0);
+const selectRef = ref<ElSelectInstance>();
+const inputRef = ref<HTMLInputElement | null>(null);
 const loading = ref(false);
-const selectOptionList = ref([]);
+const selectOptionList = ref<AutoInputRow[]>([]);
 const rowTotal = ref(0);
-const queryParams = reactive({
+const queryParams = reactive<AutoInputQueryParams>({
   pageNo: 1,
   pageSize: 10,
   value: undefined,
 });
 
-function handleChange(val) {
+function handleChange(val: string) {
   const selectRow = selectOptionList.value.find((item) => item[props.valueField] === val);
   emit("update:selectRow", selectRow);
   emit("update:selectValue", val);
@@ -226,26 +194,26 @@ const getList = async () => {
   rowTotal.value = total;
 };
 
-const remoteMethod = (query) => {
+const remoteMethod = (query: string) => {
   queryParams.value = query;
-  queryParams.pageNum = 1;
+  queryParams.pageNo = 1;
   getList();
 };
 
-const handleEnter = (event) => {
+const handleEnter = (event: KeyboardEvent) => {
   emit("handleEnter", event);
   if (selectVal.value?.trim()) {
     handleChange(selectVal.value);
   }
 };
 
-const handVisibleChange = (value) => {
+const handVisibleChange = (value: boolean) => {
   setTimeout(() => {
-    selectRef.value.$el.querySelector("input").dataset.isOpen = value;
+    selectRef.value?.$el.querySelector("input").dataset.isOpen = String(value);
   }, 600);
 };
 
-const updateValue = (newVal) => {
+const updateValue = (newVal: AutoInputRow) => {
   setTimeout(() => {
     selectOptionList.value = [
       {
@@ -263,8 +231,8 @@ const updateValue = (newVal) => {
   }, 100);
 };
 
-function syncScroll(event) {
-  scrollLeft.value = event.target.scrollLeft;
+function syncScroll(event: Event) {
+  scrollLeft.value = (event.target as HTMLElement).scrollLeft;
 }
 
 function refreshData() {
