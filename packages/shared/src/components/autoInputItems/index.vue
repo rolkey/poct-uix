@@ -58,12 +58,7 @@
             :style="{ width: field.width + 'px' }"
             class="data-cell"
           >
-            <template v-if="field.extFieldName">
-              {{ item[field.extFieldName]?.[field.fieldName] }}
-            </template>
-            <template v-else>
-              {{ item[field.fieldName] }}
-            </template>
+            {{ item[field.fieldName] }}
           </div>
         </div>
         <div
@@ -76,12 +71,7 @@
             :style="{ width: field.width + 'px' }"
             class="data-cell"
           >
-            <template v-if="field.extFieldName">
-              {{ item[field.extFieldName]?.[field.fieldName] }}
-            </template>
-            <template v-else>
-              {{ item[field.fieldName] }}
-            </template>
+            {{ item[field.fieldName] }}
           </div>
         </div>
       </div>
@@ -200,9 +190,10 @@ let lastSelectedRow: AutoInputRow | undefined | typeof noSelection = noSelection
 
 function handleChange(val: string) {
   const selectRow = selectOptionList.value.find((item) => item[props.valueField] === val);
-  emit("update:selectRow", selectRow);
   if (selectRow === lastSelectedRow) return;
   lastSelectedRow = selectRow;
+
+  emit("update:selectRow", selectRow);
   emit("select", selectRow);
 }
 
@@ -260,71 +251,137 @@ defineExpose({
 </script>
 
 <style scoped>
+/* 基础表格容器 */
 .table-container {
   display: flex;
   width: 100%;
   overflow: hidden;
   position: relative;
+  background-color: #fff;
 }
 
+/* 固定列区域 */
 .fixed-columns {
   display: flex;
   position: sticky;
   left: 0;
   z-index: 2;
   flex-shrink: 0;
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  /* background-color: var(--table-td-background-color); */
+  background-color: #fff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
 }
 
+/* 滚动列区域 */
 .scrollable-columns {
   display: flex;
   flex: 1;
-  /* backdrop-filter: saturate(180%) blur(20px); */
-  /* -webkit-backdrop-filter: saturate(180%) blur(20px); */
-  /* background-color: var(--table-td-background-color);  */
-  /* 这个选项导致与option的行高亮冲突 */
+  background-color: #fff;
 }
 
+/* 表头单元格 */
 .header-cell {
-  background-color: var(--table-th-background-color) !important;
-  border: 1px solid var(--table-th-border-color) !important;
-  padding: 4px !important;
-  font-family: "黑体";
-  color: black;
-  text-align: center;
-  font-weight: bold;
+  background-color: var(--el-table-header-bg-color, #f5f7fa) !important;
+  border-bottom: 1px solid var(--el-table-border-color, #ebeef5) !important;
+  border-right: 1px solid var(--el-table-border-color, #ebeef5) !important;
+  padding: 4px 12px !important;
+  color: var(--el-text-color-primary);
+  font-weight: 600;
+  font-size: 14px;
+  height: 36px;
+  line-height: 24px;
+  box-sizing: border-box;
   flex-shrink: 0;
+  text-align: left;
 }
 
+/* 数据单元格 */
 .data-cell {
-  /* padding: 4px; */
-  border: 1px solid var(--table-th-border-color);
+  padding: 4px 12px !important;
+  border-bottom: 1px solid var(--el-table-border-color, #ebeef5) !important;
+  border-right: 1px solid var(--el-table-border-color, #ebeef5) !important;
+  height: 36px;
+  line-height: 24px;
+  box-sizing: border-box;
   flex-shrink: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 14px;
+  color: var(--el-text-color-regular);
+  background-color: #fff;
 }
 
-#scollable-div {
-  display: flex;
-  position: relative;
-  overflow-x: auto;
-  /* 只在这个元素上使用横向滚动轴 */
-  overflow-y: hidden;
+/* 移除最后一列边框 */
+.header-cell:last-child,
+.data-cell:last-child {
+  border-right: none !important;
+}
+
+/* 下拉面板样式 */
+:deep(.el-select-dropdown) {
+  border: 1px solid var(--el-border-color-light, #e4e7ed);
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.08);
+}
+
+:deep(.el-select-dropdown__wrap) {
+  max-height: 360px;
+}
+
+/* 滚动条美化 */
+#scollable-div::-webkit-scrollbar {
+  height: 6px;
 }
 
 #scollable-div::-webkit-scrollbar-track {
-  background: #b3aeae;
-  /* 滚动条轨道颜色 */
-  border-radius: 10px;
-  /* 滚动条轨道圆角 */
+  background: #f0f0f0;
+  border-radius: 3px;
 }
 
+#scollable-div::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 3px;
+}
+
+#scollable-div::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+/* footer中的占位单元格 */
 #scollable-div .data-cell {
   height: 1px;
-  /* footer中的单元格高度与滚动条高度一致 */
   border: none;
+  padding: 0 !important;
+}
+</style>
+
+<style>
+/* 不使用 scoped，直接全局覆盖 */
+.el-select-dropdown__item {
+  padding: 0 !important;
+  height: auto !important;
+}
+.el-select-dropdown__wrap .el-select-dropdown__list {
+  padding: 0 !important;
+}
+
+.el-select-dropdown__item:hover {
+  background-color: var(--el-table-row-hover-bg-color, #f5f7fa) !important;
+}
+
+.el-select-dropdown__item.is-selected {
+  background-color: var(--el-color-primary-light-9, #ecf5ff) !important;
+  color: var(--el-color-primary, #b1b7ed) !important;
+}
+
+/* ===== 关键修复：让内部元素背景透明 ===== */
+.el-select-dropdown__item .table-container,
+.el-select-dropdown__item .fixed-columns,
+.el-select-dropdown__item .scrollable-columns {
+  background-color: transparent !important;
+}
+
+.el-select-dropdown__item .data-cell {
+  background-color: transparent !important;
 }
 </style>
