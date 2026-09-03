@@ -22,7 +22,7 @@
         <div class="fixed-columns">
           <div
             v-for="field in props.queryFields.slice(0, 2)"
-            :key="field"
+            :key="field.fieldName"
             :style="{ width: field.width + 'px' }"
             class="header-cell"
           >
@@ -35,7 +35,7 @@
         >
           <div
             v-for="field in props.queryFields.slice(2)"
-            :key="field"
+            :key="field.fieldName"
             :style="{ width: field.width + 'px' }"
             class="header-cell"
           >
