@@ -8,7 +8,7 @@ export interface AutoInputQueryField {
   width: number;
   fieldName: string;
   /** 嵌套对象外层字段名;存在时按 item[extFieldName][fieldName] 取值 */
-  extFieldName?: string;
+  //   extFieldName?: string;
 }
 
 /** 下拉选项数据行 */
@@ -16,7 +16,7 @@ export type AutoInputRow = Record<string, any>;
 
 /** 分页查询参数 */
 export interface AutoInputQueryParams {
-  pageNo: number;
+  pageNum: number;
   pageSize: number;
   /** 远程搜索关键字 */
   value?: string;

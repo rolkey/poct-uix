@@ -114,7 +114,7 @@
           class="flex-1"
           layout="total, prev, pager, next"
           :background="false"
-          v-model:page="queryParams.pageNo"
+          v-model:page="queryParams.pageNum"
           v-model:limit="queryParams.pageSize"
           @pagination="getList"
         />
@@ -128,6 +128,22 @@ import { computed, reactive, ref } from "vue";
 import { ElSelect } from "element-plus";
 import pagination from "../Pagination.vue";
 import type { AutoInputProps, AutoInputQueryParams, AutoInputRow } from "./types";
+
+// 局部指令:聚焦时自动全选输入框文本(focusin 冒泡,可捕获 el-select 内部 input)
+function handleFocusSelectAll(event: FocusEvent) {
+  const target = event.target as HTMLElement;
+  const input = target instanceof HTMLInputElement ? target : target.querySelector("input");
+  input?.select();
+}
+
+const vSelectAllOnFocus = {
+  mounted(el: HTMLElement) {
+    el.addEventListener("focusin", handleFocusSelectAll);
+  },
+  unmounted(el: HTMLElement) {
+    el.removeEventListener("focusin", handleFocusSelectAll);
+  },
+};
 
 const props = withDefaults(defineProps<AutoInputProps>(), {
   selectRow: () => ({}),
@@ -172,7 +188,7 @@ const loading = ref(false);
 const selectOptionList = ref<AutoInputRow[]>([]);
 const rowTotal = ref(0);
 const queryParams = reactive<AutoInputQueryParams>({
-  pageNo: 1,
+  pageNum: 1,
   pageSize: 10,
   value: undefined,
 });
@@ -202,7 +218,7 @@ const getList = async () => {
 
 const remoteMethod = (query: string) => {
   queryParams.value = query;
-  queryParams.pageNo = 1;
+  queryParams.pageNum = 1;
   getList();
 };
 
