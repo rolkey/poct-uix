@@ -130,11 +130,8 @@ import pagination from "../Pagination.vue";
 import type { AutoInputProps, AutoInputQueryParams, AutoInputRow } from "./types";
 
 const props = withDefaults(defineProps<AutoInputProps>(), {
-  selectValue: "",
   selectRow: () => ({}),
   labelField: "",
-  extlabelField: "",
-  extValueField: "",
   valueField: "",
   placeholder: "请选择",
   queryApi: async () => ({ pageData: [], total: 0 }),
@@ -160,9 +157,11 @@ const scrollableColumnsStyle = computed(() => {
 });
 
 const emit = defineEmits<{
-  "update:selectValue": [value: string];
   "update:selectRow": [row?: AutoInputRow];
+  "update:handVisibleChange": [visible?: boolean];
   handleEnter: [event: KeyboardEvent];
+  /** 选中行提交(携带完整行数据;清空/未匹配时为 undefined) */
+  select: [row?: AutoInputRow];
 }>();
 
 const selectVal = ref("");
@@ -178,10 +177,17 @@ const queryParams = reactive<AutoInputQueryParams>({
   value: undefined,
 });
 
+// Enter 提交与 el-select 的 change 在同一时刻会各触发一次 handleChange,
+// 用上一次提交的行做去重,保证 select 事件每次都只发一次
+const noSelection: unique symbol = Symbol("noSelection");
+let lastSelectedRow: AutoInputRow | undefined | typeof noSelection = noSelection;
+
 function handleChange(val: string) {
   const selectRow = selectOptionList.value.find((item) => item[props.valueField] === val);
   emit("update:selectRow", selectRow);
-  emit("update:selectValue", val);
+  if (selectRow === lastSelectedRow) return;
+  lastSelectedRow = selectRow;
+  emit("select", selectRow);
 }
 
 const getList = async () => {
@@ -208,26 +214,18 @@ const handleEnter = (event: KeyboardEvent) => {
 };
 
 const handVisibleChange = (value: boolean) => {
-  setTimeout(() => {
-    selectRef.value?.$el.querySelector("input").dataset.isOpen = String(value);
-  }, 600);
+  emit("update:handVisibleChange", value);
 };
 
-const updateValue = (newVal: AutoInputRow) => {
+/**
+ * 用于解决没进行下拉时，显示原始值的问题
+ *
+ * @param dataRow
+ */
+const updateValue = (dataRow: AutoInputRow) => {
   setTimeout(() => {
-    selectOptionList.value = [
-      {
-        [props.valueField]:
-          props.extValueField === ""
-            ? newVal[props.valueField] ?? ""
-            : newVal[props.extValueField] ?? "",
-        [props.labelField]:
-          props.extlabelField === ""
-            ? newVal[props.labelField] ?? ""
-            : newVal[props.extlabelField] ?? "",
-      },
-    ];
-    selectVal.value = selectOptionList.value[0][props.valueField];
+    selectOptionList.value = [dataRow];
+    selectVal.value = dataRow[props.valueField];
   }, 100);
 };
 
