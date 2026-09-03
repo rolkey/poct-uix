@@ -2,6 +2,7 @@ import Pagination from "./Pagination.vue";
 import DictTag from "./DictTag.vue";
 import FileUpload from "./FileUpload/index.vue";
 import RightToolbar from "./RightToolbar/index.vue";
+import AutoInputItems from "./autoInputItems/index.vue";
 
 export { Pagination, DictTag, FileUpload, RightToolbar };
 
@@ -11,4 +12,5 @@ export function registerSharedComponents(app: any) {
   app.component("DictTag", DictTag);
   app.component("FileUpload", FileUpload);
   app.component("RightToolbar", RightToolbar);
+  app.component("AutoInputItems", AutoInputItems);
 }
