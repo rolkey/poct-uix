@@ -1,116 +1,120 @@
 <template>
-  <el-select
-    v-model="selectVal"
-    filterable
-    remote
-    ref="selectRef"
-    :placeholder="props.placeholder"
-    remote-show-suffix
-    v-select-all-on-focus
-    :disabled="props.readonly"
-    default-first-option
-    :clearable="props.clearable"
-    :remote-method="remoteMethod"
-    :loading="loading"
-    @change="handleChange"
-    @keyup.enter.prevent="handleEnter"
-    @visibleChange="handVisibleChange"
-  >
-    <template #header>
-      <slot name="header-content" />
-      <div class="table-container" :style="tableContainerStyle">
-        <div class="fixed-columns">
-          <div
-            v-for="field in props.queryFields.slice(0, 2)"
-            :key="field.fieldName"
-            :style="{ width: field.width + 'px' }"
-            class="header-cell"
-          >
-            {{ field.title }}
-          </div>
-        </div>
-        <div
-          class="scrollable-columns"
-          :style="{ ...scrollableColumnsStyle, transform: `translateX(-${scrollLeft}px)` }"
-        >
-          <div
-            v-for="field in props.queryFields.slice(2)"
-            :key="field.fieldName"
-            :style="{ width: field.width + 'px' }"
-            class="header-cell"
-          >
-            {{ field.title }}
-          </div>
-        </div>
-      </div>
-    </template>
-    <el-option
-      v-for="item in selectOptionList"
-      :key="item[props.valueField]"
-      :label="item[props.labelField]"
-      :value="item[props.valueField]"
+  <div ref="selectContainerRef" class="custom-select-wrapper">
+    <el-select
+      v-model="selectVal"
+      filterable
+      remote
+      ref="selectRef"
+      :placeholder="props.placeholder"
+      remote-show-suffix
+      v-select-all-on-focus
+      :disabled="props.readonly"
+      default-first-option
+      :clearable="props.clearable"
+      :remote-method="remoteMethod"
+      :loading="loading"
+      popper-class="my-table-select-popper"
+      :popper-container="selectContainerRef"
+      @change="handleChange"
+      @keyup.enter.prevent="handleEnter"
+      @visibleChange="handVisibleChange"
     >
-      <div class="table-container" :style="tableContainerStyle">
-        <div class="fixed-columns">
+      <template #header>
+        <slot name="header-content" />
+        <div class="table-container" :style="tableContainerStyle">
+          <div class="fixed-columns">
+            <div
+              v-for="field in props.queryFields.slice(0, 2)"
+              :key="field.fieldName"
+              :style="{ width: field.width + 'px' }"
+              class="header-cell"
+            >
+              {{ field.title }}
+            </div>
+          </div>
           <div
-            v-for="field in props.queryFields.slice(0, 2)"
-            :key="field.fieldName"
-            :style="{ width: field.width + 'px' }"
-            class="data-cell"
+            class="scrollable-columns"
+            :style="{ ...scrollableColumnsStyle, transform: `translateX(-${scrollLeft}px)` }"
           >
-            {{ item[field.fieldName] }}
+            <div
+              v-for="field in props.queryFields.slice(2)"
+              :key="field.fieldName"
+              :style="{ width: field.width + 'px' }"
+              class="header-cell"
+            >
+              {{ field.title }}
+            </div>
           </div>
         </div>
-        <div
-          class="scrollable-columns"
-          :style="{ ...scrollableColumnsStyle, transform: `translateX(-${scrollLeft}px)` }"
-        >
-          <div
-            v-for="field in props.queryFields.slice(2)"
-            :key="field.fieldName"
-            :style="{ width: field.width + 'px' }"
-            class="data-cell"
-          >
-            {{ item[field.fieldName] }}
-          </div>
-        </div>
-      </div>
-    </el-option>
-    <template #footer>
-      <div
-        class="table-container"
-        :style="{ ...tableContainerStyle, transform: 'translate(-4px, -6px)' }"
+      </template>
+      <el-option
+        v-for="item in selectOptionList"
+        :key="item[props.valueField]"
+        :label="item[props.labelField]"
+        :value="item[props.valueField]"
       >
-        <div class="fixed-columns">
+        <div class="table-container" :style="tableContainerStyle">
+          <div class="fixed-columns">
+            <div
+              v-for="field in props.queryFields.slice(0, 2)"
+              :key="field.fieldName"
+              :style="{ width: field.width + 'px' }"
+              class="data-cell"
+            >
+              {{ item[field.fieldName] }}
+            </div>
+          </div>
           <div
-            v-for="field in props.queryFields.slice(0, 2)"
-            :key="field.fieldName"
-            :style="{ width: field.width + 'px' }"
-          ></div>
+            class="scrollable-columns"
+            :style="{ ...scrollableColumnsStyle, transform: `translateX(-${scrollLeft}px)` }"
+          >
+            <div
+              v-for="field in props.queryFields.slice(2)"
+              :key="field.fieldName"
+              :style="{ width: field.width + 'px' }"
+              class="data-cell"
+            >
+              {{ item[field.fieldName] }}
+            </div>
+          </div>
         </div>
-        <div id="scollable-div" :style="scrollableColumnsStyle" @scroll="syncScroll">
-          <div
-            v-for="field in props.queryFields.slice(2)"
-            :key="field.fieldName"
-            :style="{ width: field.width + 'px' }"
-            class="data-cell"
-          ></div>
+      </el-option>
+      <template #footer>
+        <div
+          class="table-container"
+          :style="{ ...tableContainerStyle, transform: 'translate(-4px, -6px)' }"
+        >
+          <div class="fixed-columns">
+            <div
+              v-for="field in props.queryFields.slice(0, 2)"
+              :key="field.fieldName"
+              :style="{ width: field.width + 'px' }"
+            ></div>
+          </div>
+          <div id="scollable-div" :style="scrollableColumnsStyle" @scroll="syncScroll">
+            <div
+              v-for="field in props.queryFields.slice(2)"
+              :key="field.fieldName"
+              :style="{ width: field.width + 'px' }"
+              class="data-cell"
+            ></div>
+          </div>
         </div>
-      </div>
-      <div class="flex">
-        <slot name="footer-content" />
-        <pagination
-          :total="rowTotal"
-          class="flex-1"
-          layout="total, prev, pager, next"
-          :background="false"
-          v-model:page="queryParams.pageNum"
-          v-model:limit="queryParams.pageSize"
-          @pagination="getList"
-        />
-      </div>
-    </template>
-  </el-select>
+        <div class="flex">
+          <slot name="footer-content" />
+          <pagination
+            :total="rowTotal"
+            class="flex-1"
+            layout="total, prev, pager, next"
+            :background="false"
+            v-model:page="queryParams.pageNum"
+            v-model:limit="queryParams.pageSize"
+            @pagination="getList"
+          />
+        </div>
+      </template>
+    </el-select>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -118,6 +122,8 @@ import { computed, reactive, ref } from "vue";
 import { ElSelect } from "element-plus";
 import pagination from "../Pagination.vue";
 import type { AutoInputProps, AutoInputQueryParams, AutoInputRow } from "./types";
+
+const selectContainerRef = ref<HTMLElement>();
 
 // 局部指令:聚焦时自动全选输入框文本(focusin 冒泡,可捕获 el-select 内部 input)
 function handleFocusSelectAll(event: FocusEvent) {
@@ -251,13 +257,23 @@ defineExpose({
 </script>
 
 <style scoped>
+.custom-select-wrapper {
+  width: 100%;
+}
+.custom-select-wrapper :deep(.el-select) {
+  width: 100%;
+}
+/* ==========================================
+   1. 组件基础样式 (Table & Scroll Header/Body)
+   ========================================== */
+
 /* 基础表格容器 */
 .table-container {
   display: flex;
   width: 100%;
   overflow: hidden;
   position: relative;
-  background-color: #fff;
+  background-color: transparent; /* 改为透明 */
 }
 
 /* 固定列区域 */
@@ -267,7 +283,7 @@ defineExpose({
   left: 0;
   z-index: 2;
   flex-shrink: 0;
-  background-color: #fff;
+  background-color: transparent; /* 改为透明，跟随父级 item 高亮 */
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
 }
 
@@ -275,7 +291,7 @@ defineExpose({
 .scrollable-columns {
   display: flex;
   flex: 1;
-  background-color: #fff;
+  background-color: transparent; /* 改为透明 */
 }
 
 /* 表头单元格 */
@@ -308,7 +324,7 @@ defineExpose({
   white-space: nowrap;
   font-size: 14px;
   color: var(--el-text-color-regular);
-  background-color: #fff;
+  background-color: transparent !important; /* 关键改动：移除 #fff，允许父级 hover/select 背景透出 */
 }
 
 /* 移除最后一列边框 */
@@ -353,9 +369,53 @@ defineExpose({
   border: none;
   padding: 0 !important;
 }
+
+/* ==========================================
+   2. 下拉弹窗样式重写 (通过 :deep 穿透指定 Class)
+   ========================================== */
+
+/* 下拉面板外框边框与阴影 */
+:deep(.my-table-select-popper.el-popper) {
+  border: 1px solid var(--el-border-color-light, #e4e7ed);
+  border-radius: 4px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* 下拉菜单最大高度 */
+:deep(.my-table-select-popper .el-select-dropdown__wrap) {
+  max-height: 360px;
+}
+
+/* 下拉选项与列表默认内边距清除 */
+:deep(.my-table-select-popper .el-select-dropdown__item) {
+  padding: 0 !important;
+  height: auto !important;
+}
+
+:deep(.my-table-select-popper .el-select-dropdown__wrap .el-select-dropdown__list) {
+  padding: 0 !important;
+}
+
+/* Hover 与 选中态颜色重载 */
+:deep(.my-table-select-popper .el-select-dropdown__item:hover) {
+  background-color: var(--el-table-row-hover-bg-color, #f5f7fa) !important;
+}
+
+:deep(.my-table-select-popper .el-select-dropdown__item.is-selected) {
+  background-color: var(--el-color-primary-light-9, #ecf5ff) !important;
+  color: var(--el-color-primary, #b1b7ed) !important;
+}
+
+/* 关键修复：让自定义表格单元格背景透明，继承下拉项的背景色 */
+:deep(.my-table-select-popper .el-select-dropdown__item .table-container),
+:deep(.my-table-select-popper .el-select-dropdown__item .fixed-columns),
+:deep(.my-table-select-popper .el-select-dropdown__item .scrollable-columns),
+:deep(.my-table-select-popper .el-select-dropdown__item .data-cell) {
+  background-color: transparent !important;
+}
 </style>
 
-<style>
+<!-- <style>
 /* 不使用 scoped，直接全局覆盖 */
 .el-select-dropdown__item {
   padding: 0 !important;
@@ -384,4 +444,4 @@ defineExpose({
 .el-select-dropdown__item .data-cell {
   background-color: transparent !important;
 }
-</style>
+</style> -->
