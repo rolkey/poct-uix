@@ -1,12 +1,9 @@
 {
-  "name": "poct-frontend",
-  "private": true,
-  "scripts": {
-    "dev:his": "pnpm --filter ruoyi-cloud-plus-ui-his dev",
-    "build:his": "pnpm --filter ruoyi-cloud-plus-ui-his build"
-  },
-  "engines": {
-    "node": ">=18",
-    "pnpm": ">=9"
-  }
+    "name": "poct-frontend",
+    "private": true,
+    "scripts": {},
+    "engines": {
+        "node": ">=18",
+        "pnpm": ">=9"
+    }
 }
